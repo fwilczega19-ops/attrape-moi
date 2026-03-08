@@ -12,6 +12,7 @@
     font-family: Arial, sans-serif;
   }
 
+  /* Vidéo de fond */
   #bg-video {
     position: fixed;
     top: 0;
@@ -22,14 +23,16 @@
     z-index: -1;
   }
 
+  /* La tête */
   #face {
     position: absolute;
-    width: 80px;      /* plus petit */
+    width: 80px;   /* plus petit = plus agile */
     height: 80px;
     transition: filter 0.05s, transform 0.05s;
     z-index: 10;
   }
 
+  /* Bulles */
   .bubble {
     position: absolute;
     background: white;
@@ -46,6 +49,7 @@
     100% { opacity: 0; transform: translateY(-40px); }
   }
 
+  /* Tremblement */
   @keyframes shakeScreen {
     0% { transform: translate(0px, 0px); }
     25% { transform: translate(12px, -12px); }
@@ -58,10 +62,12 @@
 
 <body>
 
+<!-- Vidéo Homer hébergée sur TON GitHub -->
 <video id="bg-video" autoplay loop muted playsinline>
-<source src="https://raw.githubusercontent.com/fwilczega19-ops/attrape-moi/main/6F9KlAM.mp4" type="video/mp4">
+  <source src="https://raw.githubusercontent.com/fwilczega19-ops/attrape-moi/main/6F9KlAM.mp4" type="video/mp4">
 </video>
 
+<!-- La tête -->
 <img id="face" src="https://em-content.zobj.net/source/microsoft-teams/363/grinning-face_1f600.png">
 
 <script>
