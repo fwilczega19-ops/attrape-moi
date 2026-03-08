@@ -2,13 +2,13 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Attrape-moi si tu peux !</title>
+<title>Attrape-moi Cartoon</title>
 
 <style>
   body {
     margin: 0;
     overflow: hidden;
-    background: url("https://i.imgur.com/0Z8FQ0C.jpeg");
+    background: url("https://i.imgur.com/7YVZk9P.png");
     background-size: cover;
     background-position: center;
     font-family: Arial, sans-serif;
@@ -18,7 +18,7 @@
     position: absolute;
     width: 130px;
     height: 130px;
-    transition: filter 0.1s, transform 0.05s;
+    transition: filter 0.1s, transform 0.05s, width 0.1s, height 0.1s;
   }
 
   .bubble {
@@ -38,9 +38,9 @@
 
   @keyframes shakeScreen {
     0% { transform: translate(0px, 0px); }
-    25% { transform: translate(5px, -5px); }
-    50% { transform: translate(-5px, 5px); }
-    75% { transform: translate(5px, 5px); }
+    25% { transform: translate(8px, -8px); }
+    50% { transform: translate(-8px, 8px); }
+    75% { transform: translate(8px, 8px); }
     100% { transform: translate(0px, 0px); }
   }
 </style>
@@ -63,7 +63,12 @@
     "Même pas proche !",
     "Si tu m'attrapes je te paye un café !",
     "Attrape-moi si tu peux !",
-    "Encore raté !"
+    "Encore raté !",
+    "Ahahah !",
+    "Tu n'y arriveras jamais !",
+    "Je suis trop rapide !",
+    "Essaie encore !",
+    "Pas aujourd'hui !"
   ];
 
   function placeFace() {
@@ -93,26 +98,31 @@
 
     const dist = Math.sqrt(dx*dx + dy*dy);
 
-    if (dist < 250) {
+    if (dist < 260) {
       face.style.filter = "hue-rotate(330deg) saturate(3)";
-      face.style.transform = `translate(${(Math.random()*10)-5}px, ${(Math.random()*10)-5}px)`;
+      face.style.transform = `translate(${(Math.random()*12)-6}px, ${(Math.random()*12)-6}px)`;
+      face.style.width = "160px";
+      face.style.height = "160px";
+
       document.body.style.animation = "shakeScreen 0.1s infinite";
 
-      x -= dx / 3;
-      y -= dy / 3;
+      x -= dx / 2.5;
+      y -= dy / 2.5;
 
-      x = Math.max(0, Math.min(x, window.innerWidth - 130));
-      y = Math.max(0, Math.min(y, window.innerHeight - 130));
+      x = Math.max(0, Math.min(x, window.innerWidth - 160));
+      y = Math.max(0, Math.min(y, window.innerHeight - 160));
 
       placeFace();
 
-      if (Math.random() < 0.05) {
+      if (Math.random() < 0.10) {
         showBubble(messages[Math.floor(Math.random() * messages.length)]);
       }
 
     } else {
       face.style.filter = "none";
       face.style.transform = "none";
+      face.style.width = "130px";
+      face.style.height = "130px";
       document.body.style.animation = "none";
     }
   });
