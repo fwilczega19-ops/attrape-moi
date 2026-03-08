@@ -24,8 +24,8 @@
 
   #face {
     position: absolute;
-    width: 130px;
-    height: 130px;
+    width: 80px;      /* plus petit */
+    height: 80px;
     transition: filter 0.05s, transform 0.05s;
     z-index: 10;
   }
@@ -90,36 +90,50 @@
     const bubble = document.createElement("div");
     bubble.className = "bubble";
     bubble.innerText = text;
-    bubble.style.left = (x + 150) + "px";
+    bubble.style.left = (x + 120) + "px";
     bubble.style.top = (y - 20) + "px";
     document.body.appendChild(bubble);
     setTimeout(() => bubble.remove(), 1200);
   }
 
   document.addEventListener("mousemove", (e) => {
-    const fx = x + 65;
-    const fy = y + 65;
+    const fx = x + 40;
+    const fy = y + 40;
 
     const dx = e.clientX - fx;
     const dy = e.clientY - fy;
 
     const dist = Math.sqrt(dx*dx + dy*dy);
 
-    if (dist < 400) {  // détection encore plus large
-      face.style.filter = "hue-rotate(330deg) saturate(6)";
-      face.style.transform = `translate(${(Math.random()*25)-12}px, ${(Math.random()*25)-12}px)`;
+    /* Détection très large */
+    if (dist < 500) {
 
-      // Fuite ultra rapide
-      x -= dx * 0.9;
-      y -= dy * 0.9;
+      /* Téléportation anti-coin */
+      if (x < 50 || y < 50 || x > window.innerWidth - 150 || y > window.innerHeight - 150) {
+        x = Math.random() * (window.innerWidth - 200) + 100;
+        y = Math.random() * (window.innerHeight - 200) + 100;
+      }
 
-      // Rebond automatique si mur
-      if (x < 0) x = 50;
-      if (y < 0) y = 50;
-      if (x > window.innerWidth - 130) x = window.innerWidth - 180;
-      if (y > window.innerHeight - 130) y = window.innerHeight - 180;
+      /* Téléportation anti-approche rapide */
+      if (dist < 120) {
+        x = Math.random() * (window.innerWidth - 200) + 100;
+        y = Math.random() * (window.innerHeight - 200) + 100;
+      }
+
+      /* Fuite ultra rapide */
+      x -= dx * 1.6;
+      y -= dy * 1.6;
+
+      /* Rebond si mur */
+      if (x < 0) x = 80;
+      if (y < 0) y = 80;
+      if (x > window.innerWidth - 80) x = window.innerWidth - 160;
+      if (y > window.innerHeight - 80) y = window.innerHeight - 160;
 
       placeFace();
+
+      face.style.filter = "hue-rotate(330deg) saturate(6)";
+      face.style.transform = `translate(${(Math.random()*25)-12}px, ${(Math.random()*25)-12}px)`;
 
       if (Math.random() < 0.25) {
         showBubble(messages[Math.floor(Math.random() * messages.length)]);
@@ -135,8 +149,8 @@
   });
 
   window.addEventListener("resize", () => {
-    x = Math.min(x, window.innerWidth - 130);
-    y = Math.min(y, window.innerHeight - 130);
+    x = Math.min(x, window.innerWidth - 80);
+    y = Math.min(y, window.innerHeight - 80);
     placeFace();
   });
 </script>
