@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Tête qui rigole fort</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #111;
+  }
+
+  #face {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    transition: filter 0.1s, transform 0.05s;
+  }
+
+  @keyframes shakeScreen {
+    0% { transform: translate(0px, 0px); }
+    25% { transform: translate(5px, -5px); }
+    50% { transform: translate(-5px, 5px); }
+    75% { transform: translate(5px, 5px); }
+    100% { transform: translate(0px, 0px); }
+  }
+</style>
+</head>
+<body>
+
+<img id="face" src="https://em-content.zobj.net/source/microsoft-teams/363/grinning-face_1f600.png">
+
+<script>
+  const face = document.getElementById("face");
+
+  let x = window.innerWidth / 2;
+  let y = window.innerHeight / 2;
+
+  function placeFace() {
+    face.style.left = x + "px";
+    face.style.top = y + "px";
+  }
+
+  placeFace();
+
+  document.addEventListener("mousemove", (e) => {
+    const fx = x + 60;
+    const fy = y + 60;
+
+    const dx = e.clientX - fx;
+    const dy = e.clientY - fy;
+
+    const dist = Math.sqrt(dx*dx + dy*dy);
+
+    if (dist < 200) {
+      face.style.filter = "hue-rotate(330deg) saturate(3)";
+      face.style.transform = `translate(${(Math.random()*10)-5}px, ${(Math.random()*10)-5}px)`;
+      document.body.style.animation = "shakeScreen 0.1s infinite";
+
+      x -= dx / 4;
+      y -= dy / 4;
+
+      x = Math.max(0, Math.min(x, window.innerWidth - 120));
+      y = Math.max(0, Math.min(y, window.innerHeight - 120));
+
+      placeFace();
+    } else {
+      face.style.filter = "none";
+      face.style.transform = "none";
+      document.body.style.animation = "none";
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    x = Math.min(x, window.innerWidth - 120);
+    y = Math.min(y, window.innerHeight - 120);
+    placeFace();
+  });
+</script>
+
+</body>
+</html>
