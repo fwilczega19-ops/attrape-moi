@@ -12,7 +12,6 @@
     font-family: Arial, sans-serif;
   }
 
-  /* Vidéo de fond */
   #bg-video {
     position: fixed;
     top: 0;
@@ -23,16 +22,14 @@
     z-index: -1;
   }
 
-  /* La tête */
   #face {
     position: absolute;
     width: 130px;
     height: 130px;
-    transition: filter 0.05s, transform 0.05s, width 0.05s, height 0.05s;
+    transition: filter 0.05s, transform 0.05s;
     z-index: 10;
   }
 
-  /* Bulles */
   .bubble {
     position: absolute;
     background: white;
@@ -49,7 +46,6 @@
     100% { opacity: 0; transform: translateY(-40px); }
   }
 
-  /* Tremblement */
   @keyframes shakeScreen {
     0% { transform: translate(0px, 0px); }
     25% { transform: translate(12px, -12px); }
@@ -62,12 +58,10 @@
 
 <body>
 
-<!-- Vidéo de fond -->
 <video id="bg-video" autoplay loop muted playsinline>
-  <source src="https://i.imgur.com/6F9klAM.mp4?raw=1" type="video/mp4">
+  <source src="6F9KlAM.mp4" type="video/mp4">
 </video>
 
-<!-- La tête -->
 <img id="face" src="https://em-content.zobj.net/source/microsoft-teams/363/grinning-face_1f600.png">
 
 <script>
@@ -77,23 +71,12 @@
   let y = window.innerHeight / 2;
 
   const messages = [
-    "Dépêche-toi !",
-    "Tu rêves !",
-    "Trop lent !",
-    "Même pas proche !",
-    "Si tu m'attrapes je te paye un café !",
-    "Attrape-moi si tu peux !",
-    "Encore raté !",
-    "Ahahah !",
-    "Tu n'y arriveras jamais !",
-    "Je suis trop rapide !",
-    "Essaie encore !",
-    "Pas aujourd'hui !",
-    "Même mon chien va plus vite",
-    "Tu crois vraiment pouvoir m'avoir",
-    "J'ai pitié de toi",
-    "T'es trop nul",
-    "Même pas en rêve"
+    "Dépêche-toi !", "Tu rêves !", "Trop lent !", "Même pas proche !",
+    "Attrape-moi si tu peux !", "Encore raté !", "Ahahah !",
+    "Tu n'y arriveras jamais !", "Je suis trop rapide !",
+    "Essaie encore !", "Pas aujourd'hui !", "Même mon chien va plus vite",
+    "Tu crois vraiment pouvoir m'avoir", "J'ai pitié de toi",
+    "T'es trop nul", "Même pas en rêve"
   ];
 
   function placeFace() {
@@ -110,44 +93,43 @@
     bubble.style.left = (x + 150) + "px";
     bubble.style.top = (y - 20) + "px";
     document.body.appendChild(bubble);
-
     setTimeout(() => bubble.remove(), 1200);
   }
 
   document.addEventListener("mousemove", (e) => {
-    const fx = x + 75;
-    const fy = y + 75;
+    const fx = x + 65;
+    const fy = y + 65;
 
     const dx = e.clientX - fx;
     const dy = e.clientY - fy;
 
     const dist = Math.sqrt(dx*dx + dy*dy);
 
-    if (dist < 350) {  // distance augmentée
-      face.style.filter = "hue-rotate(330deg) saturate(5)";
-      face.style.transform = `translate(${(Math.random()*20)-10}px, ${(Math.random()*20)-10}px)`;
-      face.style.width = "200px";
-      face.style.height = "200px";
+    if (dist < 400) {  // détection encore plus large
+      face.style.filter = "hue-rotate(330deg) saturate(6)";
+      face.style.transform = `translate(${(Math.random()*25)-12}px, ${(Math.random()*25)-12}px)`;
 
-      document.body.style.animation = "shakeScreen 0.1s infinite";
+      // Fuite ultra rapide
+      x -= dx * 0.9;
+      y -= dy * 0.9;
 
-      x -= dx / 1.5;  // fuite plus rapide
-      y -= dy / 1.5;
-
-      x = Math.max(0, Math.min(x, window.innerWidth - 200));
-      y = Math.max(0, Math.min(y, window.innerHeight - 200));
+      // Rebond automatique si mur
+      if (x < 0) x = 50;
+      if (y < 0) y = 50;
+      if (x > window.innerWidth - 130) x = window.innerWidth - 180;
+      if (y > window.innerHeight - 130) y = window.innerHeight - 180;
 
       placeFace();
 
-      if (Math.random() < 0.20) {
+      if (Math.random() < 0.25) {
         showBubble(messages[Math.floor(Math.random() * messages.length)]);
       }
+
+      document.body.style.animation = "shakeScreen 0.1s infinite";
 
     } else {
       face.style.filter = "none";
       face.style.transform = "none";
-      face.style.width = "130px";
-      face.style.height = "130px";
       document.body.style.animation = "none";
     }
   });
