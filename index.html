@@ -2,19 +2,38 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Tête qui rigole fort</title>
+<title>Attrape-moi si tu peux !</title>
+
 <style>
   body {
     margin: 0;
     overflow: hidden;
-    background: #111;
+    background: url("https://i.imgur.com/0Z8FQ0C.jpeg");
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
   }
 
   #face {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     transition: filter 0.1s, transform 0.05s;
+  }
+
+  .bubble {
+    position: absolute;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 16px;
+    box-shadow: 0 0 10px black;
+    animation: fadeOut 1.5s forwards;
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-40px); }
   }
 
   @keyframes shakeScreen {
@@ -26,6 +45,7 @@
   }
 </style>
 </head>
+
 <body>
 
 <img id="face" src="https://em-content.zobj.net/source/microsoft-teams/363/grinning-face_1f600.png">
@@ -36,12 +56,33 @@
   let x = window.innerWidth / 2;
   let y = window.innerHeight / 2;
 
+  const messages = [
+    "Dépêche-toi !",
+    "Tu rêves !",
+    "Trop lent !",
+    "Même pas proche !",
+    "Si tu m'attrapes je te paye un café !",
+    "Attrape-moi si tu peux !",
+    "Encore raté !"
+  ];
+
   function placeFace() {
     face.style.left = x + "px";
     face.style.top = y + "px";
   }
 
   placeFace();
+
+  function showBubble(text) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.innerText = text;
+    bubble.style.left = (x + 140) + "px";
+    bubble.style.top = (y - 20) + "px";
+    document.body.appendChild(bubble);
+
+    setTimeout(() => bubble.remove(), 1500);
+  }
 
   document.addEventListener("mousemove", (e) => {
     const fx = x + 60;
@@ -52,18 +93,23 @@
 
     const dist = Math.sqrt(dx*dx + dy*dy);
 
-    if (dist < 200) {
+    if (dist < 250) {
       face.style.filter = "hue-rotate(330deg) saturate(3)";
       face.style.transform = `translate(${(Math.random()*10)-5}px, ${(Math.random()*10)-5}px)`;
       document.body.style.animation = "shakeScreen 0.1s infinite";
 
-      x -= dx / 4;
-      y -= dy / 4;
+      x -= dx / 3;
+      y -= dy / 3;
 
-      x = Math.max(0, Math.min(x, window.innerWidth - 120));
-      y = Math.max(0, Math.min(y, window.innerHeight - 120));
+      x = Math.max(0, Math.min(x, window.innerWidth - 130));
+      y = Math.max(0, Math.min(y, window.innerHeight - 130));
 
       placeFace();
+
+      if (Math.random() < 0.05) {
+        showBubble(messages[Math.floor(Math.random() * messages.length)]);
+      }
+
     } else {
       face.style.filter = "none";
       face.style.transform = "none";
@@ -72,8 +118,8 @@
   });
 
   window.addEventListener("resize", () => {
-    x = Math.min(x, window.innerWidth - 120);
-    y = Math.min(y, window.innerHeight - 120);
+    x = Math.min(x, window.innerWidth - 130);
+    y = Math.min(y, window.innerHeight - 130);
     placeFace();
   });
 </script>
